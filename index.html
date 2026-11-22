@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PAYLink JA — Merchant Payment Management</title>
-<script src="https://jsdelivr.net"></script>
 <style>
   :root { --primary: #0f766e; --dark: #0f172a; --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; }
   * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
@@ -16,8 +15,8 @@
   .btn-sm { padding: 0.35rem 0.7rem; font-size: 0.8rem; }
   .container { max-width: 1000px; margin: 0 auto; padding: 2rem 5%; }
   .hidden { display: none !important; }
-  .hero { text-align: center; padding: 3rem 1rem; background: var(--card); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 2rem; }
-  .hero h1 { font-size: 1.9rem; margin-bottom: 0.75rem; }
+  .hero { text-align: center; padding: 2.5rem 1rem; background: var(--card); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 2rem; }
+  .hero h1 { font-size: 1.8rem; margin-bottom: 0.75rem; }
   .hero p { color: #475569; max-width: 600px; margin: 0 auto 1.5rem; }
   .badge { display: inline-block; background: #ccfbf1; color: #0f766e; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; }
   .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
@@ -27,10 +26,10 @@
   .pill { background: #f1f5f9; padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; }
   input, select { width: 100%; padding: 0.65rem; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.75rem; }
   .dash-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
   .stat-val { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
-  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 0.5rem; }
-  th, td { text-align: left; padding: 0.65rem; border-bottom: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 0.5rem; }
+  th, td { text-align: left; padding: 0.6rem 0.4rem; border-bottom: 1px solid var(--border); }
   .status-paid { color: #16a34a; font-weight: 700; }
   .status-pend { color: #d97706; font-weight: 700; }
   .cust-box { max-width: 440px; margin: 1.5rem auto; text-align: center; }
@@ -43,12 +42,9 @@
 
 <header>
   <div class="brand" onclick="goHome()">PAYLink JA</div>
-  <div>
-    <button class="btn btn-sm" id="auth-btn" onclick="showView('auth')">Merchant Login</button>
-  </div>
+  <div><button class="btn btn-sm" id="auth-btn" onclick="showView('auth')">Merchant Login</button></div>
 </header>
 
-<!-- 1. LANDING -->
 <div id="view-landing" class="container">
   <div class="hero">
     <span class="badge">Non-Custodial • PAYLink JA Never Holds Your Funds</span>
@@ -63,7 +59,6 @@
   </div>
 </div>
 
-<!-- 2. AUTH -->
 <div id="view-auth" class="container hidden">
   <div class="card" style="max-width:400px; margin:2rem auto;">
     <h3 id="auth-title" style="margin-bottom:1rem;">Merchant Login</h3>
@@ -78,7 +73,6 @@
   </div>
 </div>
 
-<!-- 3. DASHBOARD -->
 <div id="view-dash" class="container hidden">
   <div class="dash-header">
     <div>
@@ -132,14 +126,12 @@
   </div>
 </div>
 
-<!-- 4. PUBLIC CUSTOMER CHECKOUT -->
 <div id="view-customer" class="container hidden">
   <div class="card cust-box">
     <span class="badge">Verified Merchant Checkout</span>
     <h2 id="cust-biz-name">Loading Merchant...</h2>
     <p style="color:#64748b; font-size:0.9rem; margin-bottom:1.25rem;">1. Choose a payment channel below and pay directly.<br>2. Confirm your payment below so the merchant can reconcile it.</p>
     <div id="cust-channels"></div>
-
     <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--border); text-align:left;">
       <h4 style="margin-bottom:0.5rem; font-size:0.95rem;">Notify Merchant of Payment</h4>
       <input type="text" id="pub-cust-name" placeholder="Your Full Name">
@@ -148,15 +140,18 @@
       <button class="btn" style="width:100%;" onclick="submitCustomerNotice()">I Have Sent Payment</button>
       <div id="pub-msg" style="font-size:0.85rem; color:#16a34a; margin-top:0.5rem; font-weight:600;"></div>
     </div>
-
     <p style="font-size:0.75rem; color:#64748b; margin-top:1rem;">PAYLink JA does not hold funds. Payments settle straight to the merchant.</p>
   </div>
 </div>
 
+<script src="https://jsdelivr.net"></script>
 <script>
   const SUPABASE_URL = 'https://supabase.co';
   const SUPABASE_KEY = 'sb_publishable_VaEqFSsuTaG2HysWr5mrXA_OB0y1K2B';
-  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  let sb = null;
+  try {
+    if (window.supabase) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  } catch (e) { console.error(e); }
 
   let isRegister = false;
   let currentUser = null;
@@ -166,4 +161,7 @@
   let publicMerchantId = null;
 
   function showView(v) {
-    ['landing','auth','dash','customer'].forEach(id => document.getElementById('view-'+id).classList.add('hidden'));
+    ['landing','auth','dash','customer'].forEach(function(id) {
+      var el = document.getElementById('view-' + id);
+      if (el) el.classList.add('hidden');
+    });
