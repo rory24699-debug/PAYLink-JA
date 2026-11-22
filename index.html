@@ -15,8 +15,6 @@
   .btn-sm { padding: 0.35rem 0.7rem; font-size: 0.8rem; }
   .container { max-width: 1000px; margin: 0 auto; padding: 2rem 5%; }
   .hidden { display: none !important; }
-  
-  /* Landing */
   .hero { text-align: center; padding: 3rem 1rem; background: var(--card); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 2rem; }
   .hero h1 { font-size: 2rem; margin-bottom: 0.75rem; }
   .hero p { color: #475569; max-width: 600px; margin: 0 auto 1.5rem; }
@@ -26,8 +24,6 @@
   .card h3 { margin-bottom: 0.5rem; font-size: 1.05rem; }
   .channels { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
   .pill { background: #f1f5f9; padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; }
-
-  /* Forms & Dashboard */
   input, select { width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.75rem; }
   .dash-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
@@ -36,71 +32,57 @@
   th, td { text-align: left; padding: 0.65rem; border-bottom: 1px solid var(--border); }
   .status-paid { color: #16a34a; font-weight: 700; }
   .status-pend { color: #d97706; font-weight: 700; }
-
-  /* Customer View */
   .cust-box { max-width: 440px; margin: 2rem auto; text-align: center; }
   .pay-option { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.75rem; text-align: left; }
+  .qr-box { text-align: center; padding: 1rem; background: #f8fafc; border-radius: 8px; margin-top: 1rem; border: 1px dashed var(--border); }
 </style>
 </head>
 <body>
 
 <header>
   <div class="brand">PAYLink JA</div>
-  <div id="nav-actions">
+  <div>
     <button class="btn btn-outline btn-sm" onclick="showView('customer')">Customer Pay View</button>
     <button class="btn btn-sm" id="auth-btn" onclick="showView('auth')">Merchant Login</button>
   </div>
 </header>
 
-<!-- 1. LANDING VIEW -->
+<!-- 1. LANDING -->
 <div id="view-landing" class="container">
   <div class="hero">
     <span class="badge">Non-Custodial • PAYLink JA Never Holds Your Funds</span>
     <h1>All Your Jamaican Payment Channels in One Link</h1>
-    <p>Manage payment activity, track transactions, reconcile payouts, and give customers one simple checkout link.</p>
+    <p>Manage payment activity, track transactions, reconcile payouts, and give customers one simple checkout link or QR code.</p>
     <button class="btn" onclick="showView('auth')">Get Started / Merchant Dashboard</button>
   </div>
-
   <div class="grid-3">
-    <div class="card">
-      <h3>1. How It Works</h3>
-      <p>Connect your existing payment links and bank details. Share one PAYLink or QR code with customers.</p>
-    </div>
-    <div class="card">
-      <h3>2. Features & Benefits</h3>
-      <p>Track incoming payments across channels, reconcile settlements, and export daily reports in one place.</p>
-    </div>
-    <div class="card">
-      <h3>3. Supported Channels</h3>
-      <div class="channels">
-        <span class="pill">Lynk</span><span class="pill">WiPay</span><span class="pill">NCB / Scotia</span><span class="pill">PayPal</span><span class="pill">Stripe</span>
-      </div>
-    </div>
+    <div class="card"><h3>1. How It Works</h3><p>Connect your existing payment links and bank details. Share one PAYLink or QR code with customers.</p></div>
+    <div class="card"><h3>2. Features & Benefits</h3><p>Track incoming payments across channels, reconcile settlements, and export CSV reports in one place.</p></div>
+    <div class="card"><h3>3. Supported Channels</h3><div class="channels"><span class="pill">Lynk</span><span class="pill">WiPay</span><span class="pill">NCB / Scotia</span><span class="pill">PayPal</span><span class="pill">Stripe</span></div></div>
   </div>
 </div>
 
-<!-- 2. AUTH VIEW -->
+<!-- 2. AUTH -->
 <div id="view-auth" class="container hidden">
   <div class="card" style="max-width:400px; margin:2rem auto;">
     <h3 style="margin-bottom:1rem;">Merchant Access</h3>
     <input type="text" id="biz-name" placeholder="Business Name (e.g. Kingston Coffee Co.)">
     <input type="email" id="biz-email" placeholder="Merchant Email">
     <button class="btn" style="width:100%;" onclick="loginMerchant()">Enter Dashboard</button>
-    <p style="font-size:0.8rem; color:#64748b; margin-top:0.75rem; text-align:center;">
-      <a href="#" onclick="showView('landing')">← Back to Home</a>
-    </p>
+    <p style="font-size:0.8rem; color:#64748b; margin-top:0.75rem; text-align:center;"><a href="#" onclick="showView('landing')">← Back to Home</a></p>
   </div>
 </div>
 
-<!-- 3. MERCHANT DASHBOARD -->
+<!-- 3. DASHBOARD -->
 <div id="view-dash" class="container hidden">
   <div class="dash-header">
     <div>
       <h2 id="dash-title">Merchant Dashboard</h2>
       <small style="color:#64748b;">Funds settle directly to your connected accounts.</small>
     </div>
-    <div>
-      <button class="btn btn-outline btn-sm" style="color:var(--primary); border-color:var(--primary);" onclick="showView('customer')">Preview Customer Link</button>
+    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+      <button class="btn btn-outline btn-sm" style="color:var(--primary); border-color:var(--primary);" onclick="showView('customer')">Customer Link</button>
+      <button class="btn btn-sm" onclick="exportCSV()">Export CSV Report</button>
       <button class="btn btn-sm" style="background:#475569;" onclick="logoutMerchant()">Logout</button>
     </div>
   </div>
@@ -112,9 +94,8 @@
   </div>
 
   <div class="grid-3">
-    <!-- Manage Channels -->
     <div class="card">
-      <h3>Payment Channels</h3>
+      <h3>Payment Channels & QR</h3>
       <select id="ch-type">
         <option value="Lynk">Lynk (@tag / Link)</option>
         <option value="WiPay">WiPay Checkout Link</option>
@@ -124,9 +105,12 @@
       <input type="text" id="ch-detail" placeholder="Handle, Account # or URL">
       <button class="btn btn-sm" onclick="addChannel()">+ Add Channel</button>
       <div id="channel-list" style="margin-top:1rem;"></div>
+      <div class="qr-box">
+        <div style="font-size:0.8rem; font-weight:700; margin-bottom:0.5rem;">Merchant Checkout QR</div>
+        <img id="qr-img" alt="QR Code" style="width:140px; height:140px; border-radius:6px;">
+      </div>
     </div>
 
-    <!-- Log & Reconcile Transactions -->
     <div class="card" style="grid-column: span 2;">
       <h3>Transactions & Reconciliation</h3>
       <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
@@ -142,12 +126,12 @@
   </div>
 </div>
 
-<!-- 4. CUSTOMER PAYMENT ACCESS -->
+<!-- 4. CUSTOMER VIEW -->
 <div id="view-customer" class="container hidden">
   <div class="card cust-box">
     <span class="badge">Verified Merchant Checkout</span>
     <h2 id="cust-biz-name">Merchant Checkout</h2>
-    <p style="color:#64748b; font-size:0.9rem; margin-bottom:1.25rem;">Select a payment channel below to pay the merchant directly.</p>
+    <p style="color:#64748b; font-size:0.9rem; margin-bottom:1.25rem;">Select a payment channel below to pay directly.</p>
     <div id="cust-channels"></div>
     <p style="font-size:0.75rem; color:#64748b; margin-top:1rem;">PAYLink JA does not hold funds. Payments go straight to the merchant.</p>
     <button class="btn btn-sm" style="margin-top:1rem; background:#475569;" onclick="showView('landing')">Back</button>
@@ -177,10 +161,8 @@
   }
 
   function loginMerchant() {
-    const name = document.getElementById('biz-name').value.trim() || 'Demo JA Merchant';
-    state.merchant = name;
-    save();
-    showView('dash');
+    state.merchant = document.getElementById('biz-name').value.trim() || 'Demo JA Merchant';
+    save(); showView('dash');
   }
 
   function logoutMerchant() { state.merchant = null; save(); showView('landing'); }
@@ -200,10 +182,3 @@
     const cust = document.getElementById('tx-cust').value.trim();
     const amt = parseFloat(document.getElementById('tx-amt').value);
     if (!cust || !amt) return;
-    const ch = state.channels[0]?.type || 'Direct';
-    state.txs.unshift({ id: Date.now(), cust, channel: ch, amt, paid: false });
-    document.getElementById('tx-cust').value = '';
-    document.getElementById('tx-amt').value = '';
-    save();
-  }
-
