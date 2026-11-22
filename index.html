@@ -3,68 +3,207 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PAYLink JA - Merchant Dashboard</title>
+<title>PAYLink JA — Merchant Payment Management</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-  body{background:#f2f4f7;color:#1a1a1a}
-  header{background:#0a2a4d;color:#fff;padding:16px;text-align:center}
-  header h1{font-size:20px}
-  header p{font-size:12px;opacity:.8;margin-top:4px}
-  nav{display:flex;background:#fff;border-bottom:1px solid #ddd;overflow-x:auto}
-  nav button{flex:1;padding:14px 8px;border:none;background:#fff;font-size:13px;font-weight:bold;cursor:pointer;white-space:nowrap}
-  nav button.active{background:#0a2a4d;color:#fff}
-  .page{display:none;padding:16px}
-  .page.active{display:block}
-  .card{background:#fff;border-radius:10px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-  .card h2{font-size:16px;margin-bottom:6px}
-  .card p{font-size:13px;color:#555;line-height:1.5}
-  .btn{background:#00a651;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-weight:bold;margin-top:10px;cursor:pointer}
-  .muted{font-size:12px;color:#888;margin-top:8px}
+  :root { --primary: #0f766e; --dark: #0f172a; --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; }
+  * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--dark); line-height: 1.5; }
+  header { background: var(--dark); color: #fff; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
+  .brand { font-weight: 800; font-size: 1.25rem; color: #2dd4bf; }
+  .btn { background: var(--primary); color: #fff; border: none; padding: 0.6rem 1.1rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+  .btn-outline { background: transparent; border: 1px solid #2dd4bf; color: #2dd4bf; }
+  .btn-sm { padding: 0.35rem 0.7rem; font-size: 0.8rem; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 2rem 5%; }
+  .hidden { display: none !important; }
+  
+  /* Landing */
+  .hero { text-align: center; padding: 3rem 1rem; background: var(--card); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 2rem; }
+  .hero h1 { font-size: 2rem; margin-bottom: 0.75rem; }
+  .hero p { color: #475569; max-width: 600px; margin: 0 auto 1.5rem; }
+  .badge { display: inline-block; background: #ccfbf1; color: #0f766e; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .card { background: var(--card); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border); }
+  .card h3 { margin-bottom: 0.5rem; font-size: 1.05rem; }
+  .channels { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+  .pill { background: #f1f5f9; padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; }
+
+  /* Forms & Dashboard */
+  input, select { width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.75rem; }
+  .dash-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  .stat-val { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 0.5rem; }
+  th, td { text-align: left; padding: 0.65rem; border-bottom: 1px solid var(--border); }
+  .status-paid { color: #16a34a; font-weight: 700; }
+  .status-pend { color: #d97706; font-weight: 700; }
+
+  /* Customer View */
+  .cust-box { max-width: 440px; margin: 2rem auto; text-align: center; }
+  .pay-option { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.75rem; text-align: left; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>PAYLink JA</h1>
-  <p>One Merchant Interface. Multiple Payment Channels.</p>
+  <div class="brand">PAYLink JA</div>
+  <div id="nav-actions">
+    <button class="btn btn-outline btn-sm" onclick="showView('customer')">Customer Pay View</button>
+    <button class="btn btn-sm" id="auth-btn" onclick="showView('auth')">Merchant Login</button>
+  </div>
 </header>
 
-<nav>
-  <button class="active" onclick="showPage('overview',this)">Overview</button>
-  <button onclick="showPage('recon',this)">Reconciliation</button>
-  <button onclick="showPage('reports',this)">Business Reports</button>
-  <button onclick="showPage('settings',this)">Account Settings</button>
-</nav>
+<!-- 1. LANDING VIEW -->
+<div id="view-landing" class="container">
+  <div class="hero">
+    <span class="badge">Non-Custodial • PAYLink JA Never Holds Your Funds</span>
+    <h1>All Your Jamaican Payment Channels in One Link</h1>
+    <p>Manage payment activity, track transactions, reconcile payouts, and give customers one simple checkout link.</p>
+    <button class="btn" onclick="showView('auth')">Get Started / Merchant Dashboard</button>
+  </div>
 
-<!-- OVERVIEW -->
-<div id="overview" class="page active">
-  <div class="card"><h2>Welcome, Merchant</h2><p>This is your foundation. You manage and organise payment activity here. PAYLink JA does not hold or transfer your customers' money.</p><p class="muted">Foundation v1 - Navigation test</p></div>
-  <div class="card"><h2>Today</h2><p>Expected: $0.00<br>Received: $0.00<br>Unmatched: 0</p></div>
+  <div class="grid-3">
+    <div class="card">
+      <h3>1. How It Works</h3>
+      <p>Connect your existing payment links and bank details. Share one PAYLink or QR code with customers.</p>
+    </div>
+    <div class="card">
+      <h3>2. Features & Benefits</h3>
+      <p>Track incoming payments across channels, reconcile settlements, and export daily reports in one place.</p>
+    </div>
+    <div class="card">
+      <h3>3. Supported Channels</h3>
+      <div class="channels">
+        <span class="pill">Lynk</span><span class="pill">WiPay</span><span class="pill">NCB / Scotia</span><span class="pill">PayPal</span><span class="pill">Stripe</span>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- RECONCILIATION -->
-<div id="recon" class="page">
-  <div class="card"><h2>Reconciliation</h2><p>Match payment records against received payments.</p><button class="btn" onclick="alert('Reconciliation will be built in Step 2')">Test Button</button><p class="muted">Coming next: Upload / match list</p></div>
+<!-- 2. AUTH VIEW -->
+<div id="view-auth" class="container hidden">
+  <div class="card" style="max-width:400px; margin:2rem auto;">
+    <h3 style="margin-bottom:1rem;">Merchant Access</h3>
+    <input type="text" id="biz-name" placeholder="Business Name (e.g. Kingston Coffee Co.)">
+    <input type="email" id="biz-email" placeholder="Merchant Email">
+    <button class="btn" style="width:100%;" onclick="loginMerchant()">Enter Dashboard</button>
+    <p style="font-size:0.8rem; color:#64748b; margin-top:0.75rem; text-align:center;">
+      <a href="#" onclick="showView('landing')">← Back to Home</a>
+    </p>
+  </div>
 </div>
 
-<!-- REPORTS -->
-<div id="reports" class="page">
-  <div class="card"><h2>Business Reports</h2><p>Summaries of payment activity.</p><button class="btn" onclick="alert('Reports will be built in Step 3')">Test Button</button></div>
+<!-- 3. MERCHANT DASHBOARD -->
+<div id="view-dash" class="container hidden">
+  <div class="dash-header">
+    <div>
+      <h2 id="dash-title">Merchant Dashboard</h2>
+      <small style="color:#64748b;">Funds settle directly to your connected accounts.</small>
+    </div>
+    <div>
+      <button class="btn btn-outline btn-sm" style="color:var(--primary); border-color:var(--primary);" onclick="showView('customer')">Preview Customer Link</button>
+      <button class="btn btn-sm" style="background:#475569;" onclick="logoutMerchant()">Logout</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="card"><div>Reconciled (JMD)</div><div class="stat-val" id="stat-paid">$0</div></div>
+    <div class="card"><div>Pending Review</div><div class="stat-val" id="stat-pend" style="color:#d97706;">$0</div></div>
+    <div class="card"><div>Active Channels</div><div class="stat-val" id="stat-chan">0</div></div>
+  </div>
+
+  <div class="grid-3">
+    <!-- Manage Channels -->
+    <div class="card">
+      <h3>Payment Channels</h3>
+      <select id="ch-type">
+        <option value="Lynk">Lynk (@tag / Link)</option>
+        <option value="WiPay">WiPay Checkout Link</option>
+        <option value="Bank Transfer (NCB/Scotia)">Bank Transfer (NCB / Scotia)</option>
+        <option value="PayPal / Card">PayPal / Card Link</option>
+      </select>
+      <input type="text" id="ch-detail" placeholder="Handle, Account # or URL">
+      <button class="btn btn-sm" onclick="addChannel()">+ Add Channel</button>
+      <div id="channel-list" style="margin-top:1rem;"></div>
+    </div>
+
+    <!-- Log & Reconcile Transactions -->
+    <div class="card" style="grid-column: span 2;">
+      <h3>Transactions & Reconciliation</h3>
+      <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+        <input type="text" id="tx-cust" placeholder="Customer Name">
+        <input type="number" id="tx-amt" placeholder="Amount (JMD)">
+        <button class="btn btn-sm" onclick="addTx()">Log</button>
+      </div>
+      <table>
+        <thead><tr><th>Customer</th><th>Channel</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="tx-list"></tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
-<!-- SETTINGS -->
-<div id="settings" class="page">
-  <div class="card"><h2>Account Settings</h2><p>Merchant profile and subscription settings.</p><p>Business Name: ________<br>Email: ________<br>Plan: Foundation</p></div>
+<!-- 4. CUSTOMER PAYMENT ACCESS -->
+<div id="view-customer" class="container hidden">
+  <div class="card cust-box">
+    <span class="badge">Verified Merchant Checkout</span>
+    <h2 id="cust-biz-name">Merchant Checkout</h2>
+    <p style="color:#64748b; font-size:0.9rem; margin-bottom:1.25rem;">Select a payment channel below to pay the merchant directly.</p>
+    <div id="cust-channels"></div>
+    <p style="font-size:0.75rem; color:#64748b; margin-top:1rem;">PAYLink JA does not hold funds. Payments go straight to the merchant.</p>
+    <button class="btn btn-sm" style="margin-top:1rem; background:#475569;" onclick="showView('landing')">Back</button>
+  </div>
 </div>
 
 <script>
-function showPage(id, btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-}
-</script>
+  let state = JSON.parse(localStorage.getItem('paylink_ja')) || {
+    merchant: null,
+    channels: [
+      { type: 'Lynk', detail: '@merchantja' },
+      { type: 'Bank Transfer (NCB/Scotia)', detail: 'NCB Savings #123456789' }
+    ],
+    txs: [
+      { id: 1, cust: 'Andre Brown', channel: 'Lynk', amt: 4500, paid: true },
+      { id: 2, cust: 'Simone Campbell', channel: 'Bank Transfer', amt: 12000, paid: false }
+    ]
+  };
 
-</body>
-</html>
+  function save() { localStorage.setItem('paylink_ja', JSON.stringify(state)); render(); }
+
+  function showView(v) {
+    ['landing','auth','dash','customer'].forEach(id => document.getElementById('view-'+id).classList.add('hidden'));
+    if (v === 'auth' && state.merchant) v = 'dash';
+    document.getElementById('view-'+v).classList.remove('hidden');
+    render();
+  }
+
+  function loginMerchant() {
+    const name = document.getElementById('biz-name').value.trim() || 'Demo JA Merchant';
+    state.merchant = name;
+    save();
+    showView('dash');
+  }
+
+  function logoutMerchant() { state.merchant = null; save(); showView('landing'); }
+
+  function addChannel() {
+    const type = document.getElementById('ch-type').value;
+    const detail = document.getElementById('ch-detail').value.trim();
+    if (!detail) return;
+    state.channels.push({ type, detail });
+    document.getElementById('ch-detail').value = '';
+    save();
+  }
+
+  function removeChannel(i) { state.channels.splice(i, 1); save(); }
+
+  function addTx() {
+    const cust = document.getElementById('tx-cust').value.trim();
+    const amt = parseFloat(document.getElementById('tx-amt').value);
+    if (!cust || !amt) return;
+    const ch = state.channels[0]?.type || 'Direct';
+    state.txs.unshift({ id: Date.now(), cust, channel: ch, amt, paid: false });
+    document.getElementById('tx-cust').value = '';
+    document.getElementById('tx-amt').value = '';
+    save();
+  }
+
