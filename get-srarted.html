@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Get Started | PayLink JA</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+body { background:#000; color:#fff; }
+.navbar { background:#000; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; border-bottom:1px solid #222; }
+.logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.logo-box { width:40px; height:40px; background:#1E40FF; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:900; color:#fff; }
+.logo-text b { font-size:19px; color:#fff; display:block; line-height:1; }
+.logo-text span { font-size:9px; letter-spacing:2px; color:#5B7FFF; font-weight:700; }
+.nav-links { display:flex; gap:20px; }
+.nav-links a { color:#ccc; text-decoration:none; font-size:14px; font-weight:600; }
+.nav-links a.active { color:#fff; }
+.btn-nav { background:#1E40FF; color:#fff; padding:10px 18px; border-radius:999px; font-weight:800; font-size:14px; text-decoration:none; }
+.menu-btn { display:none; background:none; border:1px solid #333; color:#fff; font-size:22px; padding:4px 12px; border-radius:8px; }
+.hero { position:relative; padding:50px 18px 40px; overflow:hidden; background:#000; text-align:center; }
+.glow-top { position:absolute; top:-140px; left:50%; transform:translateX(-50%); width:500px; height:280px; background:#1E40FF; filter:blur(110px); opacity:0.65; border-radius:50%; pointer-events:none; }
+.hero-inner { position:relative; max-width:800px; margin:0 auto; }
+.hero h1 { font-size:40px; font-weight:900; line-height:1.1; }
+.hero h1 em { color:#5B7FFF; font-style:normal; }
+.hero p { color:#CBD5E1; margin:16px 0 0; font-size:16px; line-height:1.6; }
+.pill { display:inline-block; background:#111; border:1px solid #2A2A2A; padding:8px 14px; border-radius:999px; font-size:12px; font-weight:600; margin-bottom:16px; }
+.section { padding:40px 18px 60px; max-width:700px; margin:0 auto; }
+.form-card { background:#111; border:1px solid #222; border-radius:22px; padding:26px; }
+.form-card h3 { font-size:20px; margin-bottom:6px; }
+.form-card p { color:#94A3B8; font-size:14px; margin-bottom:18px; }
+label { display:block; font-size:13px; font-weight:700; margin:14px 0 6px; }
+input, select, textarea { width:100%; background:#000; border:1px solid #2A2A2A; color:#fff; padding:14px; border-radius:12px; font-size:15px; outline:none; }
+input:focus, select:focus, textarea:focus { border-color:#1E40FF; }
+textarea { height:90px; resize:vertical; }
+.submit { width:100%; background:#1E40FF; color:#fff; border:none; padding:16px; border-radius:12px; font-weight:800; font-size:16px; margin-top:18px; cursor:pointer; }
+.whatsapp { display:block; text-align:center; background:#25D366; color:#000; text-decoration:none; padding:15px; border-radius:12px; font-weight:800; margin-top:12px; }
+.note { text-align:center; color:#94A3B8; font-size:12px; margin-top:14px; line-height:1.5; }
+.steps-mini { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:18px; }
+.mini { background:#111; border:1px solid #222; border-radius:16px; padding:16px; text-align:center; }
+.mini b { font-size:14px; display:block; margin-bottom:4px; }
+.mini span { font-size:12px; color:#94A3B8; }
+.footer { text-align:center; padding:30px 18px; color:#94A3B8; font-size:12px; border-top:1px solid #222; }
+@media(max-width:768px){
+  .nav-links, .btn-nav { display:none; }
+  .nav-links.show { display:flex; flex-direction:column; position:absolute; top:68px; left:0; right:0; background:#000; padding:20px; border-bottom:1px solid #222; }
+  .nav-links.show a { padding:12px 0; border-bottom:1px solid #111; font-size:16px; color:#fff; }
+  .menu-btn { display:block; }
+  .hero h1 { font-size:32px; }
+  .steps-mini { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<header class="navbar">
+  <a href="index.html" class="logo">
+    <div class="logo-box">◧</div>
+    <div class="logo-text"><b>Pay<span style="color:#5B7FFF;">Link</span> JA</b><span>DIGITAL PAYMENT SOLUTIONS</span></div>
+  </a>
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="get-started.html" class="active">Get Started</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <a href="get-started.html" class="btn-nav">Get Started</a>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+</header>
+<section class="hero">
+  <div class="glow-top"></div>
+  <div class="hero-inner">
+    <span class="pill">● GET STARTED</span>
+    <h1>Get Your QR Code<br><em>In 24 Hours.</em></h1>
+    <p>Fill in this form. We'll message you on WhatsApp with your QR code and payment details.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="form-card">
+    <h3>Request Your QR Code</h3>
+    <p>Takes 1 minute. No payment needed to request.</p>
+    <form action="https://formspree.io/f/mzzgqkya" method="POST">
+      <label>Your Name *</label>
+      <input type="text" name="name" placeholder="e.g. Marsha Brown" required>
+      <label>Business Name *</label>
+      <input type="text" name="business" placeholder="e.g. Marsha's Salon" required>
+      <label>WhatsApp Number *</label>
+      <input type="tel" name="whatsapp" placeholder="e.g. 876-555-1234" required>
+      <label>What do you need?</label>
+      <select name="plan">
+        <option>Business QR — $3,500 (Most Popular)</option>
+        <option>Personal QR — $1,500</option>
+        <option>Event QR — $5,000</option>
+        <option>Not sure yet</option>
+      </select>
+      <label>Your Bank</label>
+      <select name="bank">
+        <option>NCB</option>
+        <option>Scotiabank</option>
+        <option>JN Bank</option>
+        <option>FirstCaribbean (CIBC)</option>
+        <option>Other</option>
+      </select>
+      <label>Tell us about your business (optional)</label>
+      <textarea name="message" placeholder="What do you sell? Where are you located?"></textarea>
+      <button type="submit" class="submit">Request My QR Code →</button>
+      <a href="https://wa.me/18765551234?text=Hi%20PayLink%20JA!%20I%20want%20my%20QR%20code" class="whatsapp">💬 Or Message Us On WhatsApp</a>
+      <p class="note">We will reply within 24 hours on WhatsApp.<br>Your info is private and never shared.</p>
+    </form>
+  </div>
+  <div class="steps-mini">
+    <div class="mini"><b>1. Request</b><span>Fill form in 1 min</span></div>
+    <div class="mini"><b>2. We Message You</b><span>On WhatsApp</span></div>
+    <div class="mini"><b>3. Get QR</b><span>In 24 hours</span></div>
+  </div>
+</section>
+<div class="footer">© 2026 PayLink JA — Jamaica's Digital Payment Solution<br>Made in Jamaica 🇯🇲</div>
+<script>
+function toggleMenu(){ document.getElementById('navLinks').classList.toggle('show'); }
+</script>
+</body>
+</html>
