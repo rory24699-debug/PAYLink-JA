@@ -1,121 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PayLink JA | Instant Bank-to-Bank QR Payments for Jamaica</title>
-  <meta name="description" content="Accept fast, secure bank-to-bank QR payments straight to your Jamaican bank account in seconds—no POS machine required." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    :root { --green: #00C853; --green-bright: #00E676; --black: #000000; --white: #FFFFFF; }
-    .text-green { color: var(--green) !important; }
-    .btn-green { background: var(--green); color: #fff; border: 2px solid var(--green); }
-    .btn-green:hover { background: #00A344; }
-    .bg-black { background: var(--black) !important; }
-    .bg-green { background: var(--green) !important; }
-    .icon-circle { background: var(--black) !important; }
-    .icon-circle svg { stroke: var(--green) !important; }
-    .jamaica-bar span { display:block; height:6px; }
-    .bar-green { background: var(--green); }
-    .bar-black { background: var(--black); }
-    .bar-yellow { background: var(--white); border-top:1px solid #eee; border-bottom:1px solid #eee; }
-    .trust-banner { background: var(--black) !important; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PayLink JA | Instant Bank-to-Bank QR Payments for Jamaica</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+body { background:#000; color:#fff; }
+
+/* NAV */
+.navbar { background:#000; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; border-bottom:1px solid #222; }
+.logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.logo-box { width:40px; height:40px; background:#1E40FF; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:900; color:#fff; }
+.logo-text b { font-size:19px; color:#fff; display:block; line-height:1; }
+.logo-text span { font-size:9px; letter-spacing:2px; color:#5B7FFF; font-weight:700; }
+.nav-links { display:flex; gap:20px; }
+.nav-links a { color:#ccc; text-decoration:none; font-size:14px; font-weight:600; }
+.nav-links a.active { color:#fff; }
+.btn-nav { background:#1E40FF; color:#fff; padding:10px 18px; border-radius:999px; font-weight:800; font-size:14px; text-decoration:none; }
+.menu-btn { display:none; background:none; border:1px solid #333; color:#fff; font-size:22px; padding:4px 12px; border-radius:8px; }
+
+/* HERO - BLUE GLOW LIKE YOUR PICTURE */
+.hero { position:relative; padding:40px 18px 60px; overflow:hidden; background:#000; }
+.glow-top { position:absolute; top:-120px; left:50%; transform:translateX(-50%); width:500px; height:280px; background:#1E40FF; filter:blur(110px); opacity:0.65; border-radius:50%; pointer-events:none; }
+.glow-bottom { position:absolute; bottom:-150px; right:-80px; width:300px; height:300px; background:#2563EB; filter:blur(130px); opacity:0.35; border-radius:50%; pointer-events:none; }
+.hero-inner { position:relative; max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1.1fr 0.9fr; gap:30px; align-items:center; }
+.hero h1 { font-size:44px; line-height:1.05; font-weight:900; letter-spacing:-1px; color:#fff; }
+.hero h1 em { color:#5B7FFF; font-style:normal; }
+.hero p { color:#CBD5E1; margin:16px 0 22px; font-size:16px; line-height:1.6; }
+.pills { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:22px; }
+.pill { background:#111; border:1px solid #2A2A2A; padding:8px 12px; border-radius:999px; font-size:12px; font-weight:600; color:#fff; }
+.stats { display:flex; gap:22px; }
+.stat b { font-size:20px; display:block; color:#fff; }
+.stat span { font-size:12px; color:#94A3B8; }
+
+/* GLASS CARD - EXACTLY LIKE YOUR SCREENSHOT */
+.glass { background:rgba(255,255,255,0.08); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.14); border-radius:28px; padding:26px; box-shadow:0 30px 60px rgba(0,0,0,0.6); }
+.glass-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; }
+.glass-top h2 { font-size:26px; font-weight:800; color:#fff; }
+.glass-top p { font-size:13px; color:#CBD5E1; margin:6px 0 0; }
+.live { background:#1E40FF; color:#fff; font-size:11px; font-weight:800; padding:6px 10px; border-radius:999px; }
+label { font-size:12px; color:#CBD5E1; font-weight:600; display:block; margin:14px 0 6px; }
+.input { width:100%; background:rgba(0,0,0,0.45); border:1px solid rgba(255,255,255,0.14); color:#fff; padding:15px 16px; border-radius:14px; font-size:15px; outline:none; }
+.input:focus { border-color:#1E40FF; }
+.input::placeholder { color:#777; }
+.row { display:flex; gap:10px; margin-top:18px; }
+.btn-blue { flex:1; background:#1E40FF; color:#fff; border:none; padding:16px; border-radius:14px; font-weight:800; font-size:16px; cursor:pointer; }
+.btn-arrow { width:56px; background:#fff; color:#000; border:none; border-radius:14px; font-size:20px; font-weight:900; cursor:pointer; }
+.secure { text-align:center; font-size:12px; color:#94A3B8; margin-top:14px; }
+.secure b { color:#5B7FFF; }
+
+/* SECTIONS */
+.section { padding:50px 18px; max-width:1100px; margin:0 auto; }
+.section h2 { font-size:30px; font-weight:900; margin-bottom:8px; color:#fff; }
+.section-sub { color:#94A3B8; margin-bottom:26px; }
+.grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.card { background:#111; border:1px solid #222; border-radius:20px; padding:20px; }
+.card-icon { width:52px; height:52px; border-radius:14px; background:#1E40FF; display:flex; align-items:center; justify-content:center; font-size:24px; margin-bottom:14px; color:#fff; }
+.card-icon.white { background:#fff; color:#000; }
+.card h3 { font-size:16px; margin-bottom:6px; color:#fff; }
+.card p { font-size:13px; color:#CBD5E1; line-height:1.5; }
+.steps { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+.step { background:#fff; color:#000; border-radius:20px; padding:22px; }
+.step-num { width:36px; height:36px; background:#1E40FF; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; margin-bottom:12px; }
+.step p { color:#555; font-size:14px; margin-top:6px; }
+.banner { background:#1E40FF; color:#fff; border-radius:22px; padding:24px; text-align:center; margin-top:26px; }
+.banner b { font-size:20px; color:#fff; }
+.footer { text-align:center; padding:30px 18px; color:#94A3B8; font-size:12px; border-top:1px solid #222; }
+
+/* MOBILE */
+@media(max-width:768px){
+  .nav-links, .btn-nav { display:none; }
+  .nav-links.show { display:flex; flex-direction:column; position:absolute; top:68px; left:0; right:0; background:#000; padding:20px; border-bottom:1px solid #222; }
+  .nav-links.show a { padding:12px 0; border-bottom:1px solid #111; font-size:16px; color:#fff; }
+  .menu-btn { display:block; }
+  .hero-inner { grid-template-columns:1fr; }
+  .hero h1 { font-size:34px; }
+  .grid4, .steps { grid-template-columns:1fr; }
+  .stats { flex-wrap:wrap; }
+}
+</style>
 </head>
 <body>
 
-  <!-- Navigation Header -->
-  <header class="navbar" style="background:#fff; border-bottom:3px solid #00C853;">
-    <div class="container nav-container">
-      <a href="index.html" class="logo">
-        <div class="logo-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00C853" stroke-width="2.5">
-            <rect x="3" y="3" width="7" height="7" rx="1"/>
-            <rect x="14" y="3" width="7" height="7" rx="1"/>
-            <rect x="3" y="14" width="7" height="7" rx="1"/>
-            <path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 19h2v2h-2zM19 14h2v2h-2z"/>
-          </svg>
-        </div>
-        <div class="logo-text">
-          <span class="brand-name" style="color:#000;">Pay<span style="color:#00C853;">Link</span> JA</span>
-          <span class="brand-tagline" style="color:#000;">Digital Payment Solutions</span>
-        </div>
-      </a>
+<header class="navbar">
+  <a href="index.html" class="logo">
+    <div class="logo-box">◧</div>
+    <div class="logo-text"><b>Pay<span style="color:#5B7FFF;">Link</span> JA</b><span>DIGITAL PAYMENT SOLUTIONS</span></div>
+  </a>
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html" class="active">Home</a>
+    <a href="services.html">Services</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="benefits.html">Benefits</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <a href="contact.html" class="btn-nav">Get Started</a>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+</header>
 
-      <button class="mobile-menu-btn" aria-label="Toggle Menu" onclick="toggleMenu()">☰</button>
-
-      <nav class="nav-links" id="navLinks">
-        <a href="index.html" class="active" style="color:#00C853;">Home</a>
-        <a href="services.html">Services</a>
-        <a href="how-it-works.html">How It Works</a>
-        <a href="benefits.html">Benefits</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-
-      <div class="nav-right">
-        <div class="country-badge" title="Jamaica">
-          <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-            <rect width="24" height="16" fill="#00C853"/>
-            <polygon points="0,0 12,8 0,16" fill="#000000"/>
-            <polygon points="24,0 12,8 24,16" fill="#000000"/>
-            <path d="M0,0 L24,16 M24,0 L0,16" stroke="#FFFFFF" stroke-width="2.4"/>
-          </svg>
-          <span style="color:#000; font-weight:700;">JAMAICA</span>
-        </div>
-        <a href="contact.html" class="btn btn-green btn-sm">Get Started</a>
+<section class="hero">
+  <div class="glow-top"></div>
+  <div class="glow-bottom"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="pills"><span class="pill">🇯🇲 JAMAICA</span><span class="pill">● Bank-to-Bank</span><span class="pill">● No POS Needed</span></div>
+      <h1>Instant QR Payments<br><em>for Jamaica.</em></h1>
+      <p>Accept fast, secure payments straight to your bank account in seconds — no POS machine, no cash, no waiting.</p>
+      <div class="stats">
+        <div class="stat"><b>2 Sec</b><span>Avg. Payment</span></div>
+        <div class="stat"><b>100%</b><span>Direct to Bank</span></div>
+        <div class="stat"><b>0 Fees*</b><span>To Get Started</span></div>
       </div>
     </div>
-  </header>
 
-  <!-- Hero Section -->
-  <section class="hero" style="background:#000; color:#fff;">
-    <div class="hero-overlay"></div>
-    <div class="container hero-content">
-      <div class="hero-text">
-        <div class="hero-brand-title" style="color:#fff;">
-          Pay<span style="color:#00C853;">Link</span> JA
-          <div class="jamaica-bar">
-            <span class="bar-green"></span>
-            <span class="bar-yellow"></span>
-            <span class="bar-black" style="background:#fff;"></span>
-          </div>
-        </div>
-        <h1 style="color:#fff;">
-          Instant Bank-to-Bank QR Payments <span style="color:#00C853;">for Jamaica</span>
-        </h1>
-        <p class="hero-subtitle" style="color:#fff;">
-          Accept fast, secure payments straight to your bank account in seconds — no POS machine required.
-        </p>
-        <div class="hero-buttons">
-          <a href="contact.html" class="btn btn-green">
-            Get Your Merchant QR Code <span>›</span>
-          </a>
-          <a href="how-it-works.html" class="btn" style="background:#fff; color:#000; border:2px solid #fff;">
-            <span class="play-circle" style="color:#00C853;">▶</span> How It Works <span>›</span>
-          </a>
-        </div>
+    <div class="glass">
+      <div class="glass-top">
+        <div><h2>Welcome Back</h2><p>Sign in to your PayLink JA account</p></div>
+        <span class="live">● LIVE</span>
       </div>
+      <label>EMAIL / BUSINESS NAME</label>
+      <input class="input" placeholder="you@business.com" />
+      <label>PASSWORD / MERCHANT CODE</label>
+      <input class="input" type="password" placeholder="••••••••" />
+      <div class="row">
+        <button class="btn-blue" onclick="window.location.href='contact.html'">Get Your QR Code</button>
+        <button class="btn-arrow" onclick="window.location.href='how-it-works.html'">→</button>
+      </div>
+      <p class="secure">🔒 <b>Safe & Direct:</b> We never hold your money.</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Payment Solutions Section -->
-  <section class="solutions section-padding" style="background:#fff;">
-    <div class="container">
-      <div class="section-header">
-        <h2 style="color:#000;">Our Payment Solutions</h2>
-        <p style="color:#00C853; font-weight:700;">Simple. Secure. Direct.</p>
-      </div>
+<section class="section">
+  <h2>Our Payment Solutions</h2>
+  <p class="section-sub">Simple. Secure. Direct.</p>
+  <div class="grid4">
+    <div class="card"><div class="card-icon">🏪</div><h3>Business Payments</h3><p>QR payment connections for merchants and service providers.</p></div>
+    <div class="card"><div class="card-icon white">🎟️</div><h3>Event Solutions</h3><p>QR ticketing and event payment arrangements.</p></div>
+    <div class="card"><div class="card-icon">🍔</div><h3>Food & Beverage</h3><p>QR payment solutions for food and drink purchases.</p></div>
+    <div class="card"><div class="card-icon white">👤</div><h3>Individual Solutions</h3><p>Personalised QR payment connections for individuals.</p></div>
+  </div>
+</section>
 
-      <div class="solutions-grid">
-        <div class="solution-card" style="border:2px solid #000;">
-          <div class="icon-circle bg-black">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00C853" stroke-width="2">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </div>
-          <h3 style="color:#000;">Business Payments</h3>
-          <p>
+<section class="section">
+  <h2>How PayLink JA Works</h2>
+  <p class="section-sub">3 steps. That's it.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><h3>Generate your code</h3><p>We create a custom QR code linked to your business account.</p></div>
+    <div class="step"><div class="step-num">2</div><h3>Scan & pay</h3><p>Customers scan and authorize inside their own banking app.</p></div>
+    <div class="step"><div class="step-num">3</div><h3>Instant confirmation</h3><p>Your bank confirms the payment immediately.</p></div>
+  </div>
+  <div class="banner"><b>Fast Payments. Stronger Communities.</b><br>Building a Cashless Jamaica — PayLink JA</div>
+</section>
+
+<div class="footer">© 2026 PayLink JA — Jamaica's Digital Payment Solution<br>Made in Jamaica 🇯🇲</div>
+
+<script>
+function toggleMenu(){ document.getElementById('navLinks').classList.toggle('show'); }
+</script>
+</body>
+</html>
