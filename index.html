@@ -1,167 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PAYLink JA — Merchant Payment Management</title>
-<style>
-  :root { --primary: #0f766e; --dark: #0f172a; --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; }
-  * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--dark); line-height: 1.5; }
-  header { background: var(--dark); color: #fff; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
-  .brand { font-weight: 800; font-size: 1.25rem; color: #2dd4bf; cursor: pointer; }
-  .btn { background: var(--primary); color: #fff; border: none; padding: 0.6rem 1.1rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; }
-  .btn-outline { background: transparent; border: 1px solid #2dd4bf; color: #2dd4bf; }
-  .btn-sm { padding: 0.35rem 0.7rem; font-size: 0.8rem; }
-  .container { max-width: 1000px; margin: 0 auto; padding: 2rem 5%; }
-  .hidden { display: none !important; }
-  .hero { text-align: center; padding: 2.5rem 1rem; background: var(--card); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 2rem; }
-  .hero h1 { font-size: 1.8rem; margin-bottom: 0.75rem; }
-  .hero p { color: #475569; max-width: 600px; margin: 0 auto 1.5rem; }
-  .badge { display: inline-block; background: #ccfbf1; color: #0f766e; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; }
-  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-  .card { background: var(--card); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border); }
-  .card h3 { margin-bottom: 0.5rem; font-size: 1.05rem; }
-  .channels { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
-  .pill { background: #f1f5f9; padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; }
-  input, select { width: 100%; padding: 0.65rem; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.75rem; }
-  .dash-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-  .stat-val { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
-  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 0.5rem; }
-  th, td { text-align: left; padding: 0.6rem 0.4rem; border-bottom: 1px solid var(--border); }
-  .status-paid { color: #16a34a; font-weight: 700; }
-  .status-pend { color: #d97706; font-weight: 700; }
-  .cust-box { max-width: 440px; margin: 1.5rem auto; text-align: center; }
-  .pay-option { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.75rem; text-align: left; }
-  .qr-box { text-align: center; padding: 1rem; background: #f8fafc; border-radius: 8px; margin-top: 1rem; border: 1px dashed var(--border); }
-  .err { color: #dc2626; font-size: 0.85rem; margin-bottom: 0.75rem; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PayLink JA | Instant Bank-to-Bank QR Payments for Jamaica</title>
+  <meta name="description" content="Accept fast, secure bank-to-bank QR payments straight to your Jamaican bank account in seconds—no POS machine required." />
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<header>
-  <div class="brand" onclick="goHome()">PAYLink JA</div>
-  <div><button class="btn btn-sm" id="auth-btn" onclick="showView('auth')">Merchant Login</button></div>
-</header>
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <!-- QR Icon SVG -->
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FCD116" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 19h2v2h-2zM19 14h2v2h-2z"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="brand-name">Pay<span class="text-yellow">Link</span> JA</span>
+          <span class="brand-tagline">Digital Payment Solutions</span>
+        </div>
+      </a>
 
-<div id="view-landing" class="container">
-  <div class="hero">
-    <span class="badge">Non-Custodial • PAYLink JA Never Holds Your Funds</span>
-    <h1>All Your Jamaican Payment Channels in One Link</h1>
-    <p>Organise, track, reconcile, and manage payments across multiple payment channels through one simple merchant interface.</p>
-    <button class="btn" onclick="showView('auth')">Merchant Register / Login</button>
-  </div>
-  <div class="grid-3">
-    <div class="card"><h3>1. How It Works</h3><p>Register your business, add your existing payment channels, and share your live PAYLink URL or QR code with customers.</p></div>
-    <div class="card"><h3>2. Features & Benefits</h3><p>Track incoming customer payments, reconcile settled funds, and export CSV reports anytime.</p></div>
-    <div class="card"><h3>3. Supported Channels</h3><div class="channels"><span class="pill">Lynk</span><span class="pill">WiPay</span><span class="pill">NCB / Scotia</span><span class="pill">PayPal</span><span class="pill">Stripe</span></div></div>
-  </div>
-</div>
+      <button class="mobile-menu-btn" aria-label="Toggle Menu" onclick="toggleMenu()">☰</button>
 
-<div id="view-auth" class="container hidden">
-  <div class="card" style="max-width:400px; margin:2rem auto;">
-    <h3 id="auth-title" style="margin-bottom:1rem;">Merchant Login</h3>
-    <div id="auth-err" class="err hidden"></div>
-    <input type="text" id="biz-name" class="hidden" placeholder="Business Name (e.g. Kingston Coffee Co.)">
-    <input type="email" id="auth-email" placeholder="Merchant Email">
-    <input type="password" id="auth-pass" placeholder="Password (min 6 chars)">
-    <button class="btn" style="width:100%;" id="auth-submit" onclick="handleAuth()">Login</button>
-    <p style="font-size:0.85rem; color:#475569; margin-top:1rem; text-align:center;">
-      <a href="#" id="auth-toggle" onclick="toggleAuthMode()">Need an account? Register Business</a>
-    </p>
-  </div>
-</div>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html" class="active">Home</a>
+        <a href="services.html">Services</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="benefits.html">Benefits</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
 
-<div id="view-dash" class="container hidden">
-  <div class="dash-header">
-    <div>
-      <h2 id="dash-title">Merchant Dashboard</h2>
-      <small style="color:#64748b;">Funds settle directly to your connected accounts.</small>
-    </div>
-    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-      <button class="btn btn-outline btn-sm" style="color:var(--primary); border-color:var(--primary);" onclick="openPublicLink()">Open Customer Link</button>
-      <button class="btn btn-sm" onclick="exportCSV()">Export CSV</button>
-      <button class="btn btn-sm" style="background:#475569;" onclick="logout()">Logout</button>
-    </div>
-  </div>
-
-  <div class="stats">
-    <div class="card"><div>Reconciled (JMD)</div><div class="stat-val" id="stat-paid">$0</div></div>
-    <div class="card"><div>Pending Review</div><div class="stat-val" id="stat-pend" style="color:#d97706;">$0</div></div>
-    <div class="card"><div>Active Channels</div><div class="stat-val" id="stat-chan">0</div></div>
-  </div>
-
-  <div class="grid-3">
-    <div class="card">
-      <h3>Payment Channels & QR</h3>
-      <select id="ch-type">
-        <option value="Lynk">Lynk (@tag / Link)</option>
-        <option value="WiPay">WiPay Checkout Link</option>
-        <option value="Bank Transfer (NCB/Scotia)">Bank Transfer (NCB / Scotia)</option>
-        <option value="PayPal / Card">PayPal / Card Link</option>
-      </select>
-      <input type="text" id="ch-detail" placeholder="Handle, Account # or URL">
-      <button class="btn btn-sm" onclick="addChannel()">+ Add Channel</button>
-      <div id="channel-list" style="margin-top:1rem;"></div>
-      <div class="qr-box">
-        <div style="font-size:0.8rem; font-weight:700; margin-bottom:0.5rem;">Shareable Checkout QR</div>
-        <img id="qr-img" alt="QR Code" style="width:140px; height:140px; border-radius:6px;">
-        <div style="margin-top:0.5rem;"><button class="btn btn-sm" onclick="copyShareLink()">Copy Customer Link</button></div>
+      <div class="nav-right">
+        <div class="country-badge" title="Jamaica">
+          <!-- Jamaican Flag SVG -->
+          <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://w3.org">
+            <rect width="24" height="16" fill="#009B3A"/>
+            <polygon points="0,0 12,8 0,16" fill="#000000"/>
+            <polygon points="24,0 12,8 24,16" fill="#000000"/>
+            <path d="M0,0 L24,16 M24,0 L0,16" stroke="#FED100" stroke-width="2.4"/>
+          </svg>
+          <span>JAMAICA</span>
+        </div>
+        <a href="contact.html" class="btn btn-yellow btn-sm">Get Started</a>
       </div>
     </div>
+  </header>
 
-    <div class="card" style="grid-column: span 2;">
-      <h3>Transactions & Reconciliation</h3>
-      <div style="display:flex; gap:0.5rem; margin-top:0.5rem; flex-wrap:wrap;">
-        <input type="text" id="tx-cust" style="flex:1; min-width:140px;" placeholder="Customer Name">
-        <input type="number" id="tx-amt" style="flex:1; min-width:110px;" placeholder="Amount (JMD)">
-        <button class="btn btn-sm" onclick="addTx()">Log</button>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <div class="hero-text">
+        <div class="hero-brand-title">
+          Pay<span class="text-yellow">Link</span> JA
+          <div class="jamaica-bar">
+            <span class="bar-green"></span>
+            <span class="bar-yellow"></span>
+            <span class="bar-black"></span>
+          </div>
+        </div>
+        <h1>
+          Instant Bank-to-Bank QR Payments <span class="text-yellow">for Jamaica</span>
+        </h1>
+        <p class="hero-subtitle">
+          Accept fast, secure payments straight to your bank account in seconds—no POS machine required.
+        </p>
+        <div class="hero-buttons">
+          <a href="contact.html" class="btn btn-yellow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/>
+            </svg>
+            Get Your Merchant QR Code <span>›</span>
+          </a>
+          <a href="how-it-works.html" class="btn btn-outline">
+            <span class="play-circle">▶</span> How It Works <span>›</span>
+          </a>
+        </div>
       </div>
-      <table>
-        <thead><tr><th>Customer</th><th>Channel</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
-        <tbody id="tx-list"></tbody>
-      </table>
     </div>
-  </div>
-</div>
+  </section>
 
-<div id="view-customer" class="container hidden">
-  <div class="card cust-box">
-    <span class="badge">Verified Merchant Checkout</span>
-    <h2 id="cust-biz-name">Loading Merchant...</h2>
-    <p style="color:#64748b; font-size:0.9rem; margin-bottom:1.25rem;">1. Choose a payment channel below and pay directly.<br>2. Confirm your payment below so the merchant can reconcile it.</p>
-    <div id="cust-channels"></div>
-    <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--border); text-align:left;">
-      <h4 style="margin-bottom:0.5rem; font-size:0.95rem;">Notify Merchant of Payment</h4>
-      <input type="text" id="pub-cust-name" placeholder="Your Full Name">
-      <select id="pub-cust-ch"></select>
-      <input type="number" id="pub-cust-amt" placeholder="Amount Paid (JMD)">
-      <button class="btn" style="width:100%;" onclick="submitCustomerNotice()">I Have Sent Payment</button>
-      <div id="pub-msg" style="font-size:0.85rem; color:#16a34a; margin-top:0.5rem; font-weight:600;"></div>
+  <!-- Payment Solutions Section -->
+  <section class="solutions section-padding">
+    <div class="container">
+      <div class="section-header">
+        <h2>Our Payment Solutions</h2>
+        <p>Simple. Secure. Direct.</p>
+      </div>
+
+      <div class="solutions-grid">
+        <div class="solution-card">
+          <div class="icon-circle bg-navy">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <h3>Business Payments</h3>
+          <p>QR payment connections for merchants and service providers.</p>
+        </div>
+
+        <div class="solution-card">
+          <div class="icon-circle bg-green">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+              <path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/>
+            </svg>
+          </div>
+          <h3>Event Solutions</h3>
+          <p>QR ticketing and event payment arrangements.</p>
+        </div>
+
+        <div class="solution-card">
+          <div class="icon-circle bg-yellow">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>
+            </svg>
+          </div>
+          <h3>Food &amp; Beverage</h3>
+          <p>QR payment solutions for food and drink purchases.</p>
+        </div>
+
+        <div class="solution-card">
+          <div class="icon-circle bg-blue">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <h3>Individual Solutions</h3>
+          <p>Personalised QR payment connections for individuals.</p>
+        </div>
+      </div>
     </div>
-    <p style="font-size:0.75rem; color:#64748b; margin-top:1rem;">PAYLink JA does not hold funds. Payments settle straight to the merchant.</p>
-  </div>
-</div>
+  </section>
 
-<script src="https://jsdelivr.net"></script>
-<script>
-  const SUPABASE_URL = 'https://supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_VaEqFSsuTaG2HysWr5mrXA_OB0y1K2B';
-  let sb = null;
-  try {
-    if (window.supabase) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  } catch (e) { console.error(e); }
+  <!-- How It Works Section -->
+  <section class="how-it-works section-padding bg-light">
+    <div class="container">
+      <div class="section-header">
+        <h2>How PayLink JA Works</h2>
+        <div class="jamaica-bar center-bar">
+          <span class="bar-green"></span>
+          <span class="bar-yellow"></span>
+          <span class="bar-black"></span>
+        </div>
+      </div>
 
-  let isRegister = false;
-  let currentUser = null;
-  let merchantProfile = null;
-  let channels = [];
-  let txs = [];
-  let publicMerchantId = null;
+      <div class="steps-grid">
+        <!-- Step 1 -->
+        <div class="step-card">
+          <div class="step-icon-wrapper">
+            <span class="step-badge bg-blue">1</span>
+            <div class="step-circle">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0B2240" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/>
+              </svg>
+            </div>
+          </div>
+          <h3>Generate your code</h3>
+          <p>We create and configure a custom QR code linked to your business account.</p>
+        </div>
 
-  function showView(v) {
-    ['landing','auth','dash','customer'].forEach(function(id) {
-      var el = document.getElementById('view-' + id);
-      if (el) el.classList.add('hidden');
-    });
+        <div class="step-arrow">›</div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+          <div class="step-icon-wrapper">
+            <span class="step-badge bg-green">2</span>
+            <div class="step-circle">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0B2240" stroke-width="2">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+              </svg>
+            </div>
+          </div>
+          <h3>Scan &amp; pay</h3>
+          <p>Customers scan the code and authorize the transfer directly inside their own banking app.</p>
+        </div>
+
+        <div class="step-arrow">›</div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+          <div class="step-icon-wrapper">
+            <span class="step-badge bg-yellow text-dark">3</span>
+            <div class="step-circle">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0B2240" stroke-width="2">
+                <polygon points="12 2 2 7 22 7 12 2"/><line x1="6" y1="10" x2="6" y2="17"/>
+                <line x1="10" y1="10" x2="10" y2="17"/><line x1="14" y1="10" x2="14" y2="17"/>
+                <line x1="18" y1="10" x2="18" y2="17"/><line x1="2" y1="20" x2="22" y2="20"/>
+              </svg>
+            </div>
+          </div>
+          <h3>Instant confirmation</h3>
+          <p>Your financial institution confirms the payment immediately.</p>
+        </div>
+      </div>
+
+      <!-- Trust Callout Banner -->
+      <div class="trust-banner">
+        <div class="trust-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v8"/><path d="M8 12h8"/>
+          </svg>
+        </div>
+        <div class="trust-divider"></div>
+        <p>
+          <strong class="text-yellow">Safe &amp; Direct:</strong> PayLink JA connects the payment—we never collect, hold, or touch your funds.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community / Jamaica Banner -->
+  <section class="community-banner">
+    <div class="community-overlay"></div>
+    <div class="container community-content">
+      <div class="community-text">
+        <h2>Fast Payments.<br/>Stronger Communities.</h2>
+        <p>PayLink JA &nbsp;|&nbsp; Jamaica's Digital Payment Solution</p>
+      </div>
+      <div class="community-tagline">
+        <span>Building a</span>
+        <strong>Cashless Jamaica</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
