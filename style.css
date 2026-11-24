@@ -1,1 +1,14 @@
+.site-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 20px; background:#000; position:sticky; top:0; z-index:100;
+}
+.site-header .logo img{ height:52px; width:auto; display:block; }
+.site-header .logo.small img{ height:42px; }
+.nav-links{ display:flex; gap:24px; }
+.nav-links a{ color:#fff; text-decoration:none; font-weight:600; }
+.hamburger{ display:none; color:#fff; font-size:26px; }
 
+@media (max-width:768px){
+  .nav-links{ display:none; }
+  .hamburger{ display:block; }
+}
