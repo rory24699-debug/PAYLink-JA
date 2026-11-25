@@ -100,7 +100,7 @@ label { font-size:12px; color:#CBD5E1; font-weight:600; display:block; margin:14
     <a href="contact.html" class="btn-nav-mobile">Get Started</a>
   </nav>
   <a href="contact.html" class="btn-nav">Get Started</a>
-  <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu">☰</button>
+  <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" onclick="toggleMenu()">☰</button>
 </header>
 
 <section class="hero">
@@ -157,8 +157,6 @@ function toggleMenu(){
   var btn = document.getElementById('menuBtn');
   if(btn) btn.textContent = nav.classList.contains('show') ? '✕' : '☰';
 }
-
-// Close menu when a link is tapped
 document.addEventListener('DOMContentLoaded', function(){
   var links = document.querySelectorAll('#navLinks a');
   links.forEach(function(link){
