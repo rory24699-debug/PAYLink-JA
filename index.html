@@ -16,13 +16,13 @@ body { background:#000; color:#fff; }
 .logo-box { width:40px; height:40px; background:#1E40FF; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:900; color:#fff; }
 .logo-text b { font-size:19px; color:#fff; display:block; line-height:1; }
 .logo-text span { font-size:9px; letter-spacing:2px; color:#5B7FFF; font-weight:700; }
-.nav-links { display:flex; gap:20px; }
+.nav-links { display:flex; gap:20px; align-items:center; }
 .nav-links a { color:#ccc; text-decoration:none; font-size:14px; font-weight:600; }
 .nav-links a.active { color:#fff; }
 .btn-nav { background:#1E40FF; color:#fff; padding:10px 18px; border-radius:999px; font-weight:800; font-size:14px; text-decoration:none; }
-.menu-btn { display:none; background:none; border:1px solid #333; color:#fff; font-size:22px; padding:4px 12px; border-radius:8px; }
+.menu-btn { display:none; background:none; border:1px solid #333; color:#fff; font-size:22px; padding:4px 12px; border-radius:8px; cursor:pointer; }
 
-/* HERO - BLUE GLOW LIKE YOUR PICTURE */
+/* HERO */
 .hero { position:relative; padding:40px 18px 60px; overflow:hidden; background:#000; }
 .glow-top { position:absolute; top:-120px; left:50%; transform:translateX(-50%); width:500px; height:280px; background:#1E40FF; filter:blur(110px); opacity:0.65; border-radius:50%; pointer-events:none; }
 .glow-bottom { position:absolute; bottom:-150px; right:-80px; width:300px; height:300px; background:#2563EB; filter:blur(130px); opacity:0.35; border-radius:50%; pointer-events:none; }
@@ -36,7 +36,7 @@ body { background:#000; color:#fff; }
 .stat b { font-size:20px; display:block; color:#fff; }
 .stat span { font-size:12px; color:#94A3B8; }
 
-/* GLASS CARD - EXACTLY LIKE YOUR SCREENSHOT */
+/* GLASS CARD */
 .glass { background:rgba(255,255,255,0.08); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.14); border-radius:28px; padding:26px; box-shadow:0 30px 60px rgba(0,0,0,0.6); }
 .glass-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; }
 .glass-top h2 { font-size:26px; font-weight:800; color:#fff; }
@@ -73,8 +73,9 @@ label { font-size:12px; color:#CBD5E1; font-weight:600; display:block; margin:14
 /* MOBILE */
 @media(max-width:768px){
   .nav-links, .btn-nav { display:none; }
-  .nav-links.show { display:flex; flex-direction:column; position:absolute; top:68px; left:0; right:0; background:#000; padding:20px; border-bottom:1px solid #222; }
+  .nav-links.show { display:flex; flex-direction:column; align-items:stretch; position:absolute; top:68px; left:0; right:0; background:#000; padding:20px; border-bottom:1px solid #222; z-index:99; }
   .nav-links.show a { padding:12px 0; border-bottom:1px solid #111; font-size:16px; color:#fff; }
+  .nav-links.show a.btn-nav-mobile { background:#1E40FF; color:#fff; text-align:center; border-radius:999px; padding:14px; margin-top:12px; border-bottom:none; }
   .menu-btn { display:block; }
   .hero-inner { grid-template-columns:1fr; }
   .hero h1 { font-size:34px; }
@@ -96,9 +97,10 @@ label { font-size:12px; color:#CBD5E1; font-weight:600; display:block; margin:14
     <a href="benefits.html">Benefits</a>
     <a href="about.html">About</a>
     <a href="contact.html">Contact</a>
+    <a href="contact.html" class="btn-nav-mobile">Get Started</a>
   </nav>
   <a href="contact.html" class="btn-nav">Get Started</a>
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu">☰</button>
 </header>
 
 <section class="hero">
@@ -126,4 +128,48 @@ label { font-size:12px; color:#CBD5E1; font-weight:600; display:block; margin:14
       <label>PASSWORD / MERCHANT CODE</label>
       <input class="input" type="password" placeholder="••••••••" />
       <div class="row">
-        
+        <button class="btn-blue">Sign In</button>
+        <button class="btn-arrow">→</button>
+      </div>
+      <p class="secure">Secured by <b>PAYLink JA</b> • Bank-to-Bank</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Why PayLink JA?</h2>
+  <p class="section-sub">No POS machine. No cash risk. Just scan and pay.</p>
+  <div class="grid4">
+    <div class="card"><div class="card-icon">⚡</div><h3>Fast</h3><p>Payments land in seconds, straight to your bank.</p></div>
+    <div class="card"><div class="card-icon white">📱</div><h3>No POS Needed</h3><p>Just a printed QR. Your phone is your terminal.</p></div>
+    <div class="card"><div class="card-icon">🔒</div><h3>Secure</h3><p>Money goes bank-to-bank. No cash to lose.</p></div>
+    <div class="card"><div class="card-icon">🇯🇲</div><h3>Built for Jamaica</h3><p>Works with NCB, Scotia, JN, JMMB and more.</p></div>
+  </div>
+  <div class="banner"><b>Ready to get paid faster?</b><br><br><a href="contact.html" style="color:#fff;font-weight:800;">Get Your QR →</a></div>
+</section>
+
+<footer class="footer">© 2026 PayLink JA • Kingston, Jamaica • Bank SMS is your proof of payment</footer>
+
+<script>
+function toggleMenu(){
+  var nav = document.getElementById('navLinks');
+  if(nav) nav.classList.toggle('show');
+  var btn = document.getElementById('menuBtn');
+  if(btn) btn.textContent = nav.classList.contains('show') ? '✕' : '☰';
+}
+
+// Close menu when a link is tapped
+document.addEventListener('DOMContentLoaded', function(){
+  var links = document.querySelectorAll('#navLinks a');
+  links.forEach(function(link){
+    link.addEventListener('click', function(){
+      var nav = document.getElementById('navLinks');
+      if(nav) nav.classList.remove('show');
+      var btn = document.getElementById('menuBtn');
+      if(btn) btn.textContent = '☰';
+    });
+  });
+});
+</script>
+</body>
+</html>
